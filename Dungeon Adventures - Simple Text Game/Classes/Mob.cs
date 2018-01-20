@@ -64,6 +64,16 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.WriteLine("{0} has {1} hp left.", mob.name, mob.Hp);
         }   // Fight method
 
+        public bool tryToRun(int rand)
+        {
+            if (rand <= dexterity)
+            {
+                Console.WriteLine("Escape succesed!");
+                return true;
+            }
+            return false;
+        }
+
     }
 
     class Monster
