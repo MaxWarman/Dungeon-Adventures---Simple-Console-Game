@@ -13,11 +13,12 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         public string description;
         public bool isThereBattle;
 
-        public Dungeon(int x, int y, string desc)
+        public Dungeon(int x, int y, string desc, bool isThere)
         {
             this.x = x;
             this.y = y;
             this.description = desc;
+            this.isThereBattle = isThere;
         }
     }
 }
