@@ -72,7 +72,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 return true;
             }
             return false;
-        }
+        }   // Run method
 
     }
 
