@@ -14,26 +14,25 @@ namespace Dungeon_Adventures___Simple_Text_Game
         {
             // Creating rooms
             Random rand = new Random();
-            List<Dungeon> rooms = new List<Dungeon>();
-            rooms = createRooms(ref rooms);
+            List<Dungeon> rooms;
+            createRooms(out rooms);
 
             // Creating players equipment
             List<Item> eq = new List<Item>();
 
-            // Game Menu
 
-            //showGameMenu();
-            Console.WriteLine("Dungeon Adventures - The Text Game");
-            //int znak = Console.ReadKey().KeyChar;
-            //if (znak == Convert.ToInt32(ConsoleKey.UpArrow))
-            
+
+            // Game Menu
+            showGameMenu();
 
 
             Console.ReadKey();
         }
 
-        static List<Dungeon> createRooms(ref List<Dungeon> rooms)
+        // returns a list of Dungeon objects - actuall ingame rooms
+        static void createRooms(out List<Dungeon> rooms)
         {
+            rooms = new List<Dungeon>();
             string roomDescription;
 
             // Room 0,0
@@ -43,23 +42,27 @@ namespace Dungeon_Adventures___Simple_Text_Game
             // Room 0,1
             roomDescription = "Test description of second room";
             rooms.Add(new Dungeon(0, 1, roomDescription, false));
-
-            return rooms;
         }
+
+        // draws and performs dialogue options in game menu
         static void showGameMenu()
         {
-            do
+            int actIndex = 0;
+            while (true)
             {
-                int actIndex = 0;
+                Console.Clear();
                 string[] menuOptions = new string[4];
-                menuOptions[0] = "---    1. New Game     ---";
-                menuOptions[1] = "---    2. Load Game    ---";
-                menuOptions[2] = "---    3. Credits      ---";
-                menuOptions[3] = "---    4. Exit         ---";
+                menuOptions[0] = "---    New Game     ---";
+                menuOptions[1] = "---    Load Game    ---";
+                menuOptions[2] = "---    Credits      ---";
+                menuOptions[3] = "---    Exit         ---";
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Dungeon Adventures - The Text Game");
 
                 for (int i = 0; i < menuOptions.Length; i++)
                 {
-                    if (i != actIndex)
+                    if (i == actIndex)
                     {
                         Console.BackgroundColor = ConsoleColor.White;
                         Console.ForegroundColor = ConsoleColor.Black;
@@ -73,10 +76,55 @@ namespace Dungeon_Adventures___Simple_Text_Game
                     }
                 }
 
-                int character = int.Parse(Console.ReadKey().ToString());
+                ConsoleKey key = Console.ReadKey().Key;
 
+                if(key == ConsoleKey.UpArrow)
+                {
+                    if (actIndex == 0)
+                        actIndex = menuOptions.Length - 1;
+                    else
+                        actIndex--;
+                }
+                else if (key == ConsoleKey.DownArrow)
+                {
+                    if (actIndex == menuOptions.Length-1)
+                        actIndex = 0;
+                    else
+                        actIndex++;
+                }
+                else if (key == ConsoleKey.Enter)
+                {
+                    switch(actIndex)
+                    {
+                        case 0:
+                            // NEW GAME
+                            return;
+                        case 1:
+                            // LOAD GAME
+                            Console.WriteLine("Work in progress...");
+                            return;
+                            break;
+                        case 2:
+                            // SHOW CREDITS
+                            Console.Clear();
+                            Console.WriteLine("'Dungeon Adventures - Simple Text Game'");
+                            Console.WriteLine("Original game designed by: Maksymilian Górski");
+                            Console.WriteLine("Programmered by: Maksymilian Górski");
+                            Console.WriteLine("Produced by: Maksymilian Górski");
+                            Console.WriteLine("\nclick any key to back...");
+                            Console.ReadKey();
+                            break;
+                        case 3:
+                            // EXIT
+                            Environment.Exit(0);
+                            break;
+                        default:
+                            Console.WriteLine("Error, array index not recognized...");
+                            break;
+                    }
+                }
 
-            } while (true);
+            }
         }
     }
 }
