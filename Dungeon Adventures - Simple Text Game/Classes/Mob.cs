@@ -20,6 +20,8 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
 
         private int hp;
         public int maxHp;
+        private int mp;
+        public int maxMp;
 
         public int Hp
         {
@@ -32,28 +34,43 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             }
         }   // hp - Property
 
+        public int Mp
+        {
+            get { return mp; }
+            set
+            {
+                if (value < 0) mp = 0;
+                else if (value > maxMp) mp = maxMp;
+                else mp = value;
+            }
+        }   // mp - Property
+
         public int x;
         public int y;
 
-
-        public Player(string name)
+        // Constructor
+        public Player(string name, string occupation)
         {
             this.name = name;
 
-            this.strength = 10;
-            this.hp = this.maxHp = 15;
-            this.dexterity = 4;
+            this.x = 0;
+            this.y = 0;
 
             this.gold = 0;
             this.lvl = 1;
             this.exp = 0;
             this.expToNext = 100;
 
-            this.x = 0;
-            this.y = 0;
-        }   // Constructor
+            switch(occupation)
+            {
+                // edit that switch
+            }
 
+            this.strength = 10;
+            this.hp = this.maxHp = 15;
+            this.dexterity = 4;
 
+        }
 
         public void fight(Monster mob, int dmg)
         {
@@ -111,6 +128,6 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.WriteLine("Deals {0} damage!", dmg);
             mob.Hp -= dmg;
             Console.WriteLine("{0} has {1} hp left.", mob.name, mob.Hp);
-        }   // Fight method
+        }
     }
 }
