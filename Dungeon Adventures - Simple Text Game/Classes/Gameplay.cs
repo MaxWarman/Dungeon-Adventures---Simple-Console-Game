@@ -6,9 +6,28 @@ using System.Threading.Tasks;
 
 namespace Dungeon_Adventures___Simple_Text_Game.Classes
 {
-    class SetUp
+    class Gameplay
     {
-        // returns a list of Dungeon objects - actuall ingame rooms
+        public static void gameplay(List<Dungeon> rooms, Player player, Random rand)
+        {
+            Console.Clear();
+
+            Dungeon actPlayerRoom = player.actRoom(rooms);  // make object of current room (just to not look for it everytime in 'rooms' List)
+
+            Console.WriteLine("Room description:");
+            Command.describe(actPlayerRoom);
+
+            if (actPlayerRoom.isBattle)
+            {
+                Gameplay.battle(player, rand, actPlayerRoom);
+            }
+            player.actRoom(rooms).isBattle = actPlayerRoom.isBattle;    // update .isBattle parameter in 'rooms' List
+
+            Gameplay.showUI(player);    // show players interface
+            Gameplay.playerDeclaration(player, rooms);  // let player type command
+
+        }
+
         public static void createRooms(out List<Dungeon> rooms)
         {
             rooms = new List<Dungeon>();
@@ -16,14 +35,59 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
 
             // Room 0,0
             roomDescription = "Test description of first room";
-            rooms.Add(new Dungeon(0, 0, roomDescription, false));
+            rooms.Add(new Dungeon(0, 0, roomDescription, "skt1"));
 
             // Room 0,1
             roomDescription = "Test description of second room";
-            rooms.Add(new Dungeon(0, 1, roomDescription, false));
+            rooms.Add(new Dungeon(0, 1, roomDescription, "skt1"));
+        }   // returns a list of Dungeon objects - actuall ingame rooms
+
+        public static void battle(Player player, Random rand, Dungeon actPlayerRoom)
+        {
+            Monster mob = new Monster(actPlayerRoom.mobType);
+
+            Console.WriteLine("{0} appears in front of {1}! The battle begins!", mob.name, player.name);
+
+            do
+            {
+                bool plFirst;   // true, if player attacks first in current turn
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("\nNew turn!\n");
+
+                if (player.dexterity >= mob.dexterity)
+                {
+                    plFirst = true;
+                    Console.WriteLine("{0} attacks first!", player.name);
+                }
+                else
+                {
+                    plFirst = false;
+                    Console.WriteLine("{0} attacks first!", mob.name);
+                }
+                Console.ForegroundColor = ConsoleColor.White;
+
+                if (plFirst)
+                {
+                    player.takeBattleTurn(mob, rand, actPlayerRoom);
+
+                    if (actPlayerRoom.isBattle == false)        // Finish battle if mob was killed
+                        break;
+
+                    mob.fight(player, rand);
+                }
+                else
+                {
+                    mob.fight(player, rand);
+
+                    player.takeBattleTurn(mob, rand, actPlayerRoom);
+                    if (actPlayerRoom.isBattle == false)        // Finish battle if mob was killed
+                        break;
+                }
+
+            } while (mob.Hp >= 0 || player.Hp >= 0);
         }
 
-        // draws and performs dialogue options in game menu
         public static void showGameMenu()
         {
             int actIndex = 0;
@@ -104,10 +168,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 }
 
             }
-        }
+        }   // draws and performs dialogue options in game menu
 
-        // player character generator
-        public static void createPlayerChar()
+        public static Player createPlayerChar()
         {
             Console.Clear();
 
@@ -120,7 +183,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
 
             Console.WriteLine("\nGreat! And what is your occupation?");
             Console.WriteLine("[1] Warrior \n[2] Mage \n[3] Rogue ");
-            Console.Write("Your choice: ");
+            Console.Write("Click to choose...");
             int occup = 0;
             do
             {
@@ -140,8 +203,79 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                         occup = 0;
                         break;
                 }
-            } while (occup == 1);
+            } while (occup == 0);
+            Player pl = new Player(name, occup);
+            return pl;
+        }   // player character generator
 
+        public static void showUI(Player player)
+        {
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.Write("Imię: {0}", player.name);
+            Console.Write("     ");
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("Lvl: {0}", player.lvl);
+            Console.Write("     ");
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("Gold: {0}", player.gold);
+            Console.Write("     ");
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("Help - type for list of commands\t");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        static void playerDeclaration(Player player, List<Dungeon> rooms)
+        {
+            Console.WriteLine();
+            bool flag = false;              // change to true, when important event happens (for example: player is moving to next room)
+            do
+            {
+                Console.Write("\nCommand: ");
+                string declaration = Console.ReadLine();
+
+                switch(declaration)
+                {
+                    case "h":
+                    case "Help":
+                    case "help":
+                        Command.help();
+                        break;
+                    case "Coords":
+                    case "coords":
+                        Command.coords(player);
+                        break;
+                    case "Desc":
+                    case "desc":
+                        Command.describe(player.actRoom(rooms));
+                        break;
+                    case "l":
+                    case "Look":
+                    case "look":
+                        Command.look(rooms, player.actRoom(rooms));
+                        break;
+                    case "Stats":
+                    case "stats":
+                        Command.showStats(player);
+                        break;
+                    default:
+                        Console.WriteLine("Unknown command!");
+                        break;
+                }
+
+            } while (!flag);
+            Console.WriteLine("Press any key...");
+            Console.ReadKey();
+        }
+
+        public static void gameover()
+        {
+            Console.WriteLine("Gameover :(");
+            Console.ReadKey();
         }
     }
 }

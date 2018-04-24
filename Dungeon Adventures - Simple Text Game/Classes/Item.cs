@@ -8,5 +8,11 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
 {
     class Item
     {
+        public string name;
+
+        public Item(string name)
+        {
+            this.name = name;
+        }
     }
 }
