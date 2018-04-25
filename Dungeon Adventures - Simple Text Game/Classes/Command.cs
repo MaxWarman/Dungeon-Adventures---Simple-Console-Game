@@ -41,10 +41,76 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
 
         public static void coords(Player player)
         {
-            Console.WriteLine("\n" + "Your coordinates: {0}; {1}" + "\n", player.x, player.y);
+            Console.WriteLine("\n" + "Your coordinates: {0},{1}" + "\n", player.x, player.y);
         }   // Show actual player coordinates
         
-        // Add Move method
+        public static void move(Player player, List<Dungeon> rooms, string dir)
+        {
+            switch(dir)
+            {
+                case "n":
+                case "North":
+                case "north":
+                    for (int i = 0; i < rooms.Count; i++)
+                    {
+                        if (rooms[i].x == player.x && rooms[i].y == player.y + 1)
+                        {
+                            player.y += 1;
+                            return;
+                        }
+                    }
+                    Console.WriteLine("\nYou hit the wall, you can't go there...\n");
+                    break;
+                case "s":
+                case "South":
+                case "south":
+                    for (int i = 0; i < rooms.Count; i++)
+                    {
+                        if (rooms[i].x == player.x && rooms[i].y == player.y - 1)
+                        {
+                            player.y -= 1;
+                            return;
+                        }
+                    }
+                    Console.WriteLine("\nYou hit the wall, you can't go there...\n");
+                    break;
+                case "w":
+                case "West":
+                case "west":
+                    for (int i = 0; i < rooms.Count; i++)
+                    {
+                        if (rooms[i].x == player.x - 1 && rooms[i].y == player.y)
+                        {
+                            player.x -= 1;
+                            return;
+                        }
+                    }
+                    Console.WriteLine("\nYou hit the wall, you can't go there...\n");
+                    break;
+                case "e":
+                case "East":
+                case "east":
+                    for (int i = 0; i < rooms.Count; i++)
+                    {
+                        if (rooms[i].x == player.x + 1 && rooms[i].y == player.y)
+                        {
+                            player.x += 1;
+                            return;
+                        }
+                    }
+                    Console.WriteLine("\nYou hit the wall, you can't go there...\n");
+                    break;
+                default:
+                    break;
+            }
+        }   // Change room method
+
+        public static void clear(Player player, Dungeon actPlayerRoom)
+        {
+            Console.Clear();
+            Command.describe(actPlayerRoom);
+            Gameplay.showUI(player);
+        }   // Clear console method
 
         public static void describe(Dungeon room)
         {

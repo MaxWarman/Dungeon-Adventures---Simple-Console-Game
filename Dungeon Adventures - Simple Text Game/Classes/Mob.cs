@@ -177,7 +177,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         {
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Level up!");
+            Console.WriteLine("Level up!\n");
             Console.ForegroundColor = ConsoleColor.White;
 
             this.lvl++;
@@ -221,7 +221,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                     this.strength = 2;
                     this.dexterity = 3;
                     this.hp = 7;
-                    break;                
+                    break;
+                default:                    
+                    break;            
             }
         }   // Constructor
 
@@ -248,7 +250,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             }
 
             num = rand.Next(70, 120);
-            Console.WriteLine("{0} gain {1} expirience points!", player.name, num);
+            Console.WriteLine("{0} gain {1} expirience points!\n", player.name, num);
             if(num + player.exp >= player.expToNext)
             {
                 player.lvlUp(num);

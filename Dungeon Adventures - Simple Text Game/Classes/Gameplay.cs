@@ -14,19 +14,22 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
 
             Dungeon actPlayerRoom = player.actRoom(rooms);  // make object of current room (just to not look for it everytime in 'rooms' List)
 
-            Console.WriteLine("Room description:");
-            Command.describe(actPlayerRoom);
-
             if (actPlayerRoom.isBattle)
             {
                 Gameplay.battle(player, rand, actPlayerRoom);
             }
             player.actRoom(rooms).isBattle = actPlayerRoom.isBattle;    // update .isBattle parameter in 'rooms' List
 
-            Gameplay.showUI(player);    // show players interface
-            Gameplay.playerDeclaration(player, rooms);  // let player type command
+            Console.WriteLine("Room description:");
+            Command.describe(actPlayerRoom);
 
-        }
+            Gameplay.showUI(player);    // show players interface
+            Gameplay.playerDeclaration(player, rooms, actPlayerRoom);  // let player type command
+
+            Console.WriteLine("Press any key...");
+            Console.ReadKey();
+
+        }   // one whole turn, executed everytime when player changes room
 
         public static void createRooms(out List<Dungeon> rooms)
         {
@@ -34,19 +37,36 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             string roomDescription;
 
             // Room 0,0
-            roomDescription = "Test description of first room";
-            rooms.Add(new Dungeon(0, 0, roomDescription, "skt1"));
+            roomDescription = "Test description of first room.";
+            rooms.Add(new Dungeon(0, 0, roomDescription));
 
             // Room 0,1
-            roomDescription = "Test description of second room";
+            roomDescription = "This is second room. Here was battle.";
             rooms.Add(new Dungeon(0, 1, roomDescription, "skt1"));
+
+            // Room 0,2
+            roomDescription = "Room 0,2, here was battle";
+            rooms.Add(new Dungeon(0, 2, roomDescription, "skt1"));
+
+            // Room 1,0
+            roomDescription = "First room on right. Shall be treasure room in the future.";
+            rooms.Add(new Dungeon(1, 0, roomDescription));
+
+            // Room 1,2
+            roomDescription = "Left-top corner room. Here was battle.";
+            rooms.Add(new Dungeon(1, 2, roomDescription, "skt1"));
+
+            // Room -1,2
+            roomDescription = "Right-top corner room";
+            rooms.Add(new Dungeon(-1, 2, roomDescription));
+
         }   // returns a list of Dungeon objects - actuall ingame rooms
 
         public static void battle(Player player, Random rand, Dungeon actPlayerRoom)
         {
             Monster mob = new Monster(actPlayerRoom.mobType);
 
-            Console.WriteLine("{0} appears in front of {1}! The battle begins!", mob.name, player.name);
+            Console.WriteLine("{0} appears in front of {1} while passing to the next room!\nThe battle begins!", mob.name, player.name);
 
             do
             {
@@ -86,7 +106,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 }
 
             } while (mob.Hp >= 0 || player.Hp >= 0);
-        }
+        }   // fighting mechanism
 
         public static void showGameMenu()
         {
@@ -227,9 +247,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("Help - type for list of commands\t");
             Console.ForegroundColor = ConsoleColor.White;
-        }
+        }   // show basic, visible all the time player information
 
-        static void playerDeclaration(Player player, List<Dungeon> rooms)
+        static void playerDeclaration(Player player, List<Dungeon> rooms, Dungeon actPlayerRoom)
         {
             Console.WriteLine();
             bool flag = false;              // change to true, when important event happens (for example: player is moving to next room)
@@ -245,6 +265,25 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                     case "help":
                         Command.help();
                         break;
+
+                    // Move declarations
+                    case "n":
+                    case "North":
+                    case "north":
+                    case "s":
+                    case "South":
+                    case "south":
+                    case "w":
+                    case "West":
+                    case "west":
+                    case "e":
+                    case "East":
+                    case "east":
+                        flag = true;
+                        Command.move(player, rooms, declaration);
+                        break;
+
+                    // Player info declarations
                     case "Coords":
                     case "coords":
                         Command.coords(player);
@@ -262,20 +301,28 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                     case "stats":
                         Command.showStats(player);
                         break;
+
+                    // Game-self declarations
+                    case "Clear":
+                    case "clear":
+                        Command.clear(player, actPlayerRoom);
+                        break;
+                    case "Exit":
+                    case "exit":
+                        Command.exit();
+                        break;
                     default:
                         Console.WriteLine("Unknown command!");
                         break;
                 }
 
-            } while (!flag);
-            Console.WriteLine("Press any key...");
-            Console.ReadKey();
-        }
+            } while (flag == false);
+        }   // takes and executes commands typed by player
 
         public static void gameover()
         {
             Console.WriteLine("Gameover :(");
             Console.ReadKey();
-        }
+        }   // gameover method :(
     }
 }
