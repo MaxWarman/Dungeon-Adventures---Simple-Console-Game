@@ -10,9 +10,6 @@ namespace Dungeon_Adventures___Simple_Text_Game
 {
     class Program
     {
-        /*
-         * OGARNĄĆ PRZESYŁANIE OBIEKTÓW MIĘDZY KLASAMI 
-         */
         static void Main(string[] args)
         {
             // Declarations
@@ -24,9 +21,10 @@ namespace Dungeon_Adventures___Simple_Text_Game
             Gameplay.showGameMenu();
             Player player = Gameplay.createPlayerChar();
 
-            Gameplay.gameplay(rooms, player, rand);
-
-            Console.ReadKey();
+            while(true)
+            {
+               Gameplay.gameplay(rooms, player, rand);
+            }
         }
     }
 }
