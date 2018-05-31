@@ -171,9 +171,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                             // SHOW CREDITS
                             Console.Clear();
                             Console.WriteLine("'Dungeon Adventures - Simple Text Game'");
-                            Console.WriteLine("Original game designed by: Maksymilian Górski");
-                            Console.WriteLine("Programmered by: Maksymilian Górski");
-                            Console.WriteLine("Produced by: Maksymilian Górski");
+                            Console.WriteLine("Original game designed by: Max Warman");
+                            Console.WriteLine("Programmered by: Max Warman");
+                            Console.WriteLine("Produced by: Max Warman");
                             Console.WriteLine("\nclick any key to back...");
                             Console.ReadKey();
                             break;
@@ -233,7 +233,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.WriteLine();
 
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write("Imię: {0}", player.name);
+            Console.Write("Name: {0}", player.name);
             Console.Write("     ");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
