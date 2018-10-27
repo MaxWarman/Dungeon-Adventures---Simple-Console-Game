@@ -3,69 +3,50 @@ using System.Collections.Generic;
 
 namespace Dungeon_Adventures___Simple_Text_Game.Classes
 {
-    public class Player: Coordinates
+    public class Player : Coordinates
     {
         // Player info
-        private string _name;
-        public string name
-        { get { return _name; } set { _name = value; } }
-        private string _occupation;
-        public string occupation
-        { get { return _occupation; } set { _occupation = value; } }
-
+        public string Name { get; set; }
+        public string Occupation { get; set; }
 
         // Basic stats
-        private int _strength;
-        public int strength
-        { get { return _strength; } set { _strength = value; } }
-        private int _dexterity;
-        public int dexterity
-        { get { return _dexterity; } set { _dexterity = value; } }
-        private int _gold = 0;
-        public int gold
-        { get { return _gold; } set { _gold = value; } }
+        public int Strength { get; set; }
+        public int Dexterity { get; set; }
+        public int Gold { get; set; } = 0;
+
 
         // Expirience properties
-        private int _lvl;
-        public int lvl
-        { get { return _lvl; } set { _lvl = value; } }
-        private int _exp;
-        public int exp
-        { get { return _exp; } set { _exp = value; } }
-        private int _expToNextLvl;
-        public int expToNextLvl
-        { get { return _expToNextLvl; } set { _expToNextLvl = value; } }
+
+        public int Lvl { get; set; }
+        public int Exp { get; set; }
+        public int ExpToNextLvl { get; set; }
 
         // Variable statistics
         private int _hp;
-        public int hp
+        public int Hp
         {
-            get { return hp; }
+            get { return _hp; }
             set
             {
-                if (value < 0) { hp = 0; }
-                else if (value > maxHp) { hp = maxHp; }
-                else { hp = value; }
+                if (value < 0) { _hp = 0; }
+                else if (value > MaxHp) { _hp = MaxHp; }
+                else { _hp = value; }
             }
         }
-        private int _maxHp;
-        public int maxHp
-        { get { return _maxHp; } set { _maxHp = value; } }
+        public int MaxHp { get; set; }
 
         private int _mp;
-        public int mp
+        public int Mp
         {
             get { return _mp; }
             set
             {
                 if (value < 0) _mp = 0;
-                else if (value > maxMp) _mp = maxMp;
+                else if (value > MaxMp) _mp = MaxMp;
                 else _mp = value;
             }
         }
-        private int _maxMp;
-        public int maxMp
-        { get { return _maxMp; } set { _maxMp = value; } }
+        public int MaxMp { get; set; }
 
         public Dungeon actualRoom;
         public List<Item> eq = new List<Item>();
@@ -73,40 +54,40 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         // Constructor
         public Player(string name, int occupation)
         {
-            this._name = name;
+            this.Name = name;
 
             this.x = 0;
             this.y = 0;
 
-            this._gold = 0;
-            this._lvl = 1;
-            this._exp = 0;
-            this._expToNextLvl = 100;
+            this.Gold = 0;
+            this.Lvl = 1;
+            this.Exp = 0;
+            this.ExpToNextLvl = 100;
 
-            switch(occupation)
+            switch (occupation)
             {
                 case 1:
-                    this._strength = 15;
-                    this._dexterity = 3;
-                    this._hp = this._maxHp = 15;
-                    this._mp = this._maxMp = 5;
-                    this._occupation = "Warrior";
+                    this.Strength = 15;
+                    this.Dexterity = 3;
+                    this._hp = this.MaxHp = 15;
+                    this._mp = this.MaxMp = 5;
+                    this.Occupation = "Warrior";
                     break;
                 case 2:
-                    this._strength = 4;
-                    this._dexterity = 5;
-                    this._hp = this._maxHp = 10;
-                    this._mp = this._maxMp = 20;
-                    this._occupation = "Mage";
+                    this.Strength = 4;
+                    this.Dexterity = 5;
+                    this._hp = this.MaxHp = 10;
+                    this._mp = this.MaxMp = 20;
+                    this.Occupation = "Mage";
                     break;
                 case 3:
-                    this._strength = 9;
-                    this._dexterity = 9;
-                    this._hp = this.maxHp = 20;
-                    this._mp = this.maxMp = 10;
-                    this._occupation = "Rogue";
+                    this.Strength = 9;
+                    this.Dexterity = 9;
+                    this._hp = this.MaxHp = 20;
+                    this._mp = this.MaxMp = 10;
+                    this.Occupation = "Rogue";
                     break;
-            } 
+            }
 
         }
 
@@ -131,7 +112,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             do
             {
                 string declaration = Console.ReadLine();
-                switch(declaration)
+                switch (declaration)
                 {
                     case "1":
                         this.Attack(mob, rand, actPlayerRoom);
@@ -153,7 +134,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             } while (flag == false);
         }
 
-        public void Move( List<Dungeon> rooms, string direction)
+        public void Move(List<Dungeon> rooms, string direction)
         {
             switch (direction.ToLower())
             {
@@ -183,7 +164,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                     break;
                 case "w":
                 case "west":
-                    foreach(Dungeon room in rooms)
+                    foreach (Dungeon room in rooms)
                     {
                         if (room.x == this.x - 1 && room.y == this.y)
                         {
@@ -216,7 +197,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             int damage = rand.Next(this.strength - this.lvl, this.strength + this.lvl);
 
             Console.WriteLine();
-            Console.WriteLine($"{this.name} attacks {mob.Id} and deals {damage} dmg!");
+            Console.WriteLine($"{this.Name} attacks {mob.Id} and deals {damage} dmg!");
             mob.hp -= damage;
             Console.WriteLine($"{mob.Id} has {mob.hp} hp left!", mob.Id, mob.hp);
         }
@@ -243,14 +224,14 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.ForegroundColor = ConsoleColor.White;
 
             this.lvl++;
-            this.exp = this.exp + expGained;
-            this.exp -= expToNextLvl;
-            this.expToNextLvl += 25;
-            
-            if(this.exp >= this.expToNextLvl)
+            this.Exp = this.Exp + expGained;
+            this.Exp -= ExpToNextLvl;
+            this.ExpToNextLvl += 25;
+
+            if (this.Exp >= this.ExpToNextLvl)
             {
-                expGained = this.exp - this.expToNextLvl;
-                this.exp -= expGained;
+                expGained = this.Exp - this.ExpToNextLvl;
+                this.Exp -= expGained;
                 this.LvlUp(expGained);
             }
         }
