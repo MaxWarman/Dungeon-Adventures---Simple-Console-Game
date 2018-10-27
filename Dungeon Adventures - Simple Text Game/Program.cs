@@ -1,29 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dungeon_Adventures___Simple_Text_Game.Classes;
-using System.IO;
 
 namespace Dungeon_Adventures___Simple_Text_Game
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            // Declarations
+            // Setup
             Random rand = new Random();
             List<Dungeon> rooms;
+            Setup.CreateDungeonRooms(out rooms);
+            Setup.ShowGameMainMenu();
+            Player player = Setup.CreatePlayerCharacter();
 
-            // Set Up stuff
-            Gameplay.createRooms(out rooms);
-            Gameplay.showGameMenu();
-            Player player = Gameplay.createPlayerChar();
-
+            // Game
             while(true)
             {
-               Gameplay.gameplay(rooms, player, rand);
+                Console.Clear();
+
+                player.actualRoom = player.GetActualRoom(rooms);
+
+                if (player.actualRoom.isThereCombat)
+                {
+                    MainGameplay.PlayCombat(player, rand);
+                    player.GetActualRoom(rooms).isThereCombat = false;
+                }
+
+                PlayerCommand.DescribeRoom(player.actualRoom);
+                MainGameplay.ShowUI(player);
+                MainGameplay.GetPlayerDeclaration(player, rooms, player.actualRoom);
+
+                Console.WriteLine("Press any key...");
+                Console.ReadKey();
             }
         }
     }
