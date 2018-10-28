@@ -19,9 +19,10 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
 
         public int Lvl { get; set; }
         public int Exp { get; set; }
+        public int ExpTotal { get; set; }
         public int ExpToNextLvl { get; set; }
 
-        // Variable statistics
+        // Often variable statistics
         private int _hp;
         public int Hp
         {
@@ -56,12 +57,12 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         {
             this.Name = name;
 
-            this.x = 0;
-            this.y = 0;
+            this.X = 0;
+            this.Y = 0;
 
             this.Gold = 0;
             this.Lvl = 1;
-            this.Exp = 0;
+            this.Exp = this.ExpTotal = 0;
             this.ExpToNextLvl = 100;
 
             switch (occupation)
@@ -96,7 +97,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         {
             foreach (Dungeon room in rooms)
             {
-                if (room.x == this.x && room.y == this.y)
+                if (room.X == this.X && room.Y == this.Y)
                 {
                     return room;
                 }
@@ -142,9 +143,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 case "north":
                     foreach (Dungeon room in rooms)
                     {
-                        if (room.x == this.x && room.y == this.y + 1)
+                        if (room.X == this.X && room.Y == this.Y + 1)
                         {
-                            this.y++;
+                            this.Y++;
                             return;
                         }
                     }
@@ -154,9 +155,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 case "south":
                     foreach (Dungeon room in rooms)
                     {
-                        if (room.x == this.x && room.y == this.y - 1)
+                        if (room.X == this.X && room.Y == this.Y - 1)
                         {
-                            this.y--;
+                            this.Y--;
                             return;
                         }
                     }
@@ -166,9 +167,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 case "west":
                     foreach (Dungeon room in rooms)
                     {
-                        if (room.x == this.x - 1 && room.y == this.y)
+                        if (room.X == this.X - 1 && room.Y == this.Y)
                         {
-                            this.x--;
+                            this.X--;
                             return;
                         }
                     }
@@ -178,9 +179,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 case "east":
                     foreach (Dungeon room in rooms)
                     {
-                        if (room.x == this.x + 1 && room.y == this.y)
+                        if (room.X == this.X + 1 && room.X == this.X)
                         {
-                            this.x++; ;
+                            this.X++; ;
                             return;
                         }
                     }
@@ -194,18 +195,18 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         public void Attack(Monster mob, Random rand, Dungeon actPlayerRoom)
         {
             // Amount of dmg dealt depands on proportional to strenght value - player's lvl
-            int damage = rand.Next(this.strength - this.lvl, this.strength + this.lvl);
+            int damage = rand.Next(this.Strength - this.Lvl, this.Strength + this.Lvl);
 
             Console.WriteLine();
             Console.WriteLine($"{this.Name} attacks {mob.Id} and deals {damage} dmg!");
-            mob.hp -= damage;
-            Console.WriteLine($"{mob.Id} has {mob.hp} hp left!", mob.Id, mob.hp);
+            mob.Hp -= damage;
+            Console.WriteLine($"{mob.Id} has {mob.Hp} hp left!", mob.Id, mob.Hp);
         }
 
         public void Escape(Random rand)
         {
             int num = rand.Next(1, 10);
-            if (num <= this.dexterity)
+            if (num <= this.Dexterity)
             {
                 Console.WriteLine("Escape successed!");
                 this.actualRoom.isThereCombat = false;
@@ -223,7 +224,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.WriteLine("Level up!\n");
             Console.ForegroundColor = ConsoleColor.White;
 
-            this.lvl++;
+            this.Lvl++;
             this.Exp = this.Exp + expGained;
             this.Exp -= ExpToNextLvl;
             this.ExpToNextLvl += 25;

@@ -15,8 +15,8 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             set
             {
                 if (value < 0) { _hp = 0; }
-                else if (value > 0) { _hp = MaxHp; }
-                else _hp = value;
+                else if (value > MaxHp) { _hp = MaxHp; }
+                else { _hp = value; }
             }
         }
         public int MaxHp { get; set; }
@@ -41,36 +41,40 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         // Methods
         public void Attack(Player player, Random rand)
         {
-            int dmg = rand.Next(this.Strength - 1, this.Strength + 2);
+            int damage = rand.Next(this.Strength - 1, this.Strength + 2);
 
-            Console.WriteLine();
-            Console.WriteLine("{0} attacks {1} and deals {2} dmg!", this.Id, player.name, dmg);
-            player.hp -= dmg;
-            Console.WriteLine("{0} has {1} hp left.", player.name, player.hp);
+            Console.WriteLine($"\n{this.Id} attacks {player.Name} and deals {damage} damage!");
+            player.Hp -= damage;
+            Console.WriteLine($"{player.Name} has {player.Hp} hp left.");
         }
 
         public void Loot(Player player, Random rand)
         {
             int num = rand.Next(1, 5);
-            Console.WriteLine("\n{0} loots {1} gold coins!", player.name, num);
+            Console.WriteLine($"\n{player.Name} loots {num} gold coins!");
 
             num = rand.Next(1, 5);
             if (num == 1)
             {
-                Console.WriteLine("{0} loots Health Potion!", player.name);
+                Console.WriteLine($"{player.Name} loots Health Potion!", player.Name);
                 player.eq.Add(new Item("Hp potion"));
             }
 
             int expGained = rand.Next(70, 120);
-            Console.WriteLine("{0} gain {1} expirience points!\n", player.name, num);
-            if (num + player.exp >= player.expToNextLvl)
+            Console.WriteLine($"{player.Name} gain {expGained} expirience points!\n");
+            player.ExpTotal += expGained;
+            if (expGained + player.Exp >= player.ExpToNextLvl)
             {
                 player.LvlUp(expGained);
             }
             else
             {
-                player.exp += expGained;
+                player.Exp += expGained;
             }
+
+            Console.WriteLine("Press any key...");
+            Console.ReadKey();
+            Console.Clear();
         }
     }
 }

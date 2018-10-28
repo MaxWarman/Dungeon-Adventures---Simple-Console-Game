@@ -39,13 +39,13 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
 
         public static void ShowCoordinates(Player player)
         {
-            Console.WriteLine("\n" + "Your coordinates: {0},{1}" + "\n", player.x, player.y);
+            Console.WriteLine("\n" + $"Your coordinates: {player.X},{player.Y}" + "\n");
         } 
 
-        public static void ClearConsole(Player player, Dungeon actPlayerRoom)
+        public static void ClearConsole(Player player)
         {
             Console.Clear();
-            PlayerCommand.DescribeRoom(actPlayerRoom);
+            PlayerCommand.DescribeRoom(player.actualRoom);
             MainGameplay.ShowUI(player);
         }
 
@@ -68,22 +68,22 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
 
             for (int i = 0; i < rooms.Count; i++)
             {
-                if (rooms[i].x == room.x && rooms[i].y == room.y + 1)
+                if (rooms[i].X == room.X && rooms[i].Y == room.Y + 1)
                 {
                     Console.WriteLine("North");
                     continue;
                 }
-                if (rooms[i].x == room.x && rooms[i].y == room.y - 1)
+                if (rooms[i].X == room.X && rooms[i].Y == room.Y - 1)
                 {
                     Console.WriteLine("South");
                     continue;
                 }
-                if (rooms[i].x == room.x - 1 && rooms[i].y == room.y)
+                if (rooms[i].X == room.X - 1 && rooms[i].Y == room.Y)
                 {
                     Console.WriteLine("West");
                     continue;
                 }
-                if (rooms[i].x == room.x + 1 && rooms[i].y == room.y)
+                if (rooms[i].X == room.X + 1 && rooms[i].Y == room.Y)
                 {
                     Console.WriteLine("East");
                     continue;
@@ -91,15 +91,16 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             }
         }
 
-        public static void ShowPlayerStats(Player player)
+        public static void ShowPlayerStatistics(Player player)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\n" + "Player statistics: ");
-            Console.WriteLine("- Strength = {0}", player.strength);
-            Console.WriteLine("- Dexterity = {0}", player.dexterity);
-            Console.WriteLine("- Hp = {0}/{1}", player.hp, player.maxHp);
-            Console.WriteLine("- Mp = {0}/{1}", player.mp, player.maxMp);
-            Console.WriteLine("- Exp = {0}/{1}", player.exp, player.expToNextLvl);
+            Console.WriteLine($"- Strength = {player.Strength}");
+            Console.WriteLine($"- Dexterity = {player.Dexterity}");
+            Console.WriteLine($"- Hp = {player.Hp}/{player.MaxHp}");
+            Console.WriteLine($"- Mp = {player.Mp}/{player.MaxMp}");
+            Console.WriteLine($"- Exp = {player.Exp}/{player.ExpToNextLvl}");
+            Console.WriteLine($"- Exp total = {player.ExpTotal}");
             Console.ForegroundColor = ConsoleColor.White;
 
         } 

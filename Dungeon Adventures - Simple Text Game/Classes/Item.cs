@@ -2,11 +2,11 @@
 {
     public class Item
     {
-        public string name { get; set; }
+        public string Name { get; set; }
 
         public Item(string name)
         {
-            this.name = name;
+            this.Name = name;
         }
     }
 }

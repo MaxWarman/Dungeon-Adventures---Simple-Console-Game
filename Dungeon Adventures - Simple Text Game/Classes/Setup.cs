@@ -9,7 +9,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         {
             Console.Clear();
 
-            Console.Write("What is your name, brave hero? ");
+            Console.WriteLine("What is your name, brave hero?");
             string name = "";
             do
             {

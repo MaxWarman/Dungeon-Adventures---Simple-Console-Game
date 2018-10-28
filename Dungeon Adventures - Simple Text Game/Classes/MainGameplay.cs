@@ -15,12 +15,12 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             do
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("\nNew turn!\n");
+                Console.WriteLine("New turn!\n");
                 Console.ForegroundColor = ConsoleColor.White;
 
-                if (player.dexterity > monster.Dexterity)
+                if (player.Dexterity > monster.Dexterity)
                 {
-                    Console.WriteLine($"{player.name} attacks first!");
+                    Console.WriteLine($"{player.Name} attacks first!");
                     player.TakeOneCombatTurn(monster, rand, player.actualRoom);
 
                     doesCombatLast = Combat.Resolve(player, monster, rand);
@@ -58,20 +58,26 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.WriteLine();
 
             Console.ForegroundColor = ConsoleColor.Magenta;
-            Console.Write("Name: {0}", player.name);
+            Console.Write("Name:");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write($" {player.Name}");
             Console.Write("     ");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write("Lvl: {0}", player.lvl);
+            Console.Write("Lvl:");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write($" {player.Lvl}");
             Console.Write("     ");
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("Gold: {0}\n", player.gold);
-            Console.Write("     ");
+            Console.Write("Gold:");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write($" {player.Gold}");
+            Console.Write("\n");
 
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("'help' - shows commands list\t");
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("'help' - shows command list");
+            Console.ForegroundColor = ConsoleColor.White; 
         }
 
         public static void GetPlayerDeclaration(Player player, List<Dungeon> rooms, Dungeon actPlayerRoom)
@@ -115,12 +121,12 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                         PlayerCommand.LookForDirections(rooms, player.GetActualRoom(rooms));
                         break;
                     case "stats":
-                        PlayerCommand.ShowPlayerStats(player);
+                        PlayerCommand.ShowPlayerStatistics(player);
                         break;
 
                     // Game-self declarations
                     case "clear":
-                        PlayerCommand.ClearConsole(player, actPlayerRoom);
+                        PlayerCommand.ClearConsole(player);
                         break;
                     case "exit":
                         PlayerCommand.ExitGame();
