@@ -10,8 +10,7 @@ namespace Dungeon_Adventures___Simple_Text_Game
         {
             // Setup
             Random rand = new Random();
-            List<Dungeon> rooms;
-            Setup.CreateDungeonRooms(out rooms);
+            Setup.CreateDungeonRooms(out List<Dungeon> rooms);
             Setup.ShowGameMainMenu();
             Player player = Setup.CreatePlayerCharacter();
 
@@ -22,15 +21,17 @@ namespace Dungeon_Adventures___Simple_Text_Game
 
                 player.actualRoom = player.GetActualRoom(rooms);
 
-                if (player.actualRoom.isThereCombat)
+                if (player.actualRoom.isThereCombat == true)
                 {
                     MainGameplay.PlayCombat(player, rand);
-                    player.GetActualRoom(rooms).isThereCombat = false;
+                    player.actualRoom.isThereCombat = false;
                 }
 
                 PlayerCommand.DescribeRoom(player.actualRoom);
                 MainGameplay.ShowUI(player);
-                MainGameplay.GetPlayerDeclaration(player, rooms, player.actualRoom);
+
+                Dungeon.UpdateRoom(player, rooms);
+                MainGameplay.GetPlayerDeclaration(player, rooms);
 
                 Console.WriteLine("Press any key...");
                 Console.ReadKey();
