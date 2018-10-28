@@ -77,6 +77,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         public static void ShowGameMainMenu()
         {
             int actualIndex = 0;
+            Console.ForegroundColor = ConsoleColor.White;
             while (true)
             {
                 Console.Clear();
@@ -86,8 +87,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 menuOptions[2] = "---    Credits      ---";
                 menuOptions[3] = "---    Exit         ---";
 
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Dungeon Adventures - The Text Game");
+                Console.WriteLine("Dungeon Adventures - The Text Game\n");
 
                 for (int i = 0; i < menuOptions.Length; i++)
                 {

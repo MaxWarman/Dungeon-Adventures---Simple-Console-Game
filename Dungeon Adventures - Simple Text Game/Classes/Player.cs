@@ -146,6 +146,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                         if (room.X == this.X && room.Y == this.Y + 1)
                         {
                             this.Y++;
+                            this.actualRoom.visited = true;
                             return;
                         }
                     }
@@ -158,6 +159,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                         if (room.X == this.X && room.Y == this.Y - 1)
                         {
                             this.Y--;
+                            this.actualRoom.visited = true;
                             return;
                         }
                     }
@@ -170,6 +172,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                         if (room.X == this.X - 1 && room.Y == this.Y)
                         {
                             this.X--;
+                            this.actualRoom.visited = true;
                             return;
                         }
                     }
@@ -181,7 +184,8 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                     {
                         if (room.X == this.X + 1 && room.X == this.X)
                         {
-                            this.X++; ;
+                            this.X++;
+                            this.actualRoom.visited = true;
                             return;
                         }
                     }
@@ -194,7 +198,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
 
         public void Attack(Monster mob, Random rand, Dungeon actPlayerRoom)
         {
-            // Amount of dmg dealt depands on proportional to strenght value - player's lvl
+            // Amount of dmg dealt depands on proportional to (strenght value +- player's lvl)
             int damage = rand.Next(this.Strength - this.Lvl, this.Strength + this.Lvl);
 
             Console.WriteLine();

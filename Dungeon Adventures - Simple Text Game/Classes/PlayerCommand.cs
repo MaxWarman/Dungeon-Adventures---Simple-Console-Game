@@ -39,8 +39,10 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
 
         public static void ShowCoordinates(Player player)
         {
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\n" + $"Your coordinates: {player.X},{player.Y}" + "\n");
-        } 
+            Console.ForegroundColor = ConsoleColor.White;
+        }
 
         public static void ClearConsole(Player player)
         {

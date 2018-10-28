@@ -1,4 +1,6 @@
-﻿namespace Dungeon_Adventures___Simple_Text_Game.Classes
+﻿using System.Collections.Generic;
+
+namespace Dungeon_Adventures___Simple_Text_Game.Classes
 {
     public class Dungeon: Coordinates
     {
@@ -28,6 +30,18 @@
 
             this.isThereCombat = true;
             this.mobType = mobType;
+        }
+
+        public static void UpdateRoom(Player player, List<Dungeon> rooms)
+        {
+            for(int i = 0; i < rooms.Count; i++)
+            {
+                if(rooms[i].X == player.X && rooms[i].Y == player.Y)
+                {
+                    rooms[i] = player.actualRoom;
+                    break;
+                }
+            }
         }
     }
 }

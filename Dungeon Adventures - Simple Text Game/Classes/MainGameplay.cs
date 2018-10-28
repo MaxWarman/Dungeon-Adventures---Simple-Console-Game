@@ -50,7 +50,6 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 Console.ForegroundColor = ConsoleColor.White;
 
             } while (doesCombatLast == true);
-            player.actualRoom.isThereCombat = false;
         }
 
         public static void ShowUI(Player player)
@@ -80,7 +79,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.ForegroundColor = ConsoleColor.White; 
         }
 
-        public static void GetPlayerDeclaration(Player player, List<Dungeon> rooms, Dungeon actPlayerRoom)
+        public static void GetPlayerDeclaration(Player player, List<Dungeon> rooms)
         {
             Console.WriteLine();
             bool isThereEvent = false;
@@ -106,6 +105,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                     case "e":
                     case "east":
                         isThereEvent = true;
+
                         player.Move(rooms, declaration);
                         break;
 
