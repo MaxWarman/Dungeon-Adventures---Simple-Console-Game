@@ -2,9 +2,10 @@
 
 namespace Dungeon_Adventures___Simple_Text_Game.Classes
 {
-    public class Monster: Coordinates
+    public class Monster
     {
-        public string Id { get; set; }
+        public string Type { get; set; }
+
         public int Strength { get; set; }
         public int Dexterity { get; set; }
 
@@ -21,35 +22,34 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         }
         public int MaxHp { get; set; }
 
-
-        // Constructor
         public Monster(string mobType)
         {
             switch (mobType)
             {
                 case "skt1":
-                    this.Id = "Skeleton";
+                    this.Type = "Skeleton";
                     this.Strength = 2;
                     this.Dexterity = 3;
-                    this._hp = this.MaxHp = 7;
+                    this.Hp = this.MaxHp = 8;
                     break;
                 default:
                     break;
             }
         }
 
-        // Methods
         public void Attack(Player player, Random rand)
         {
             int damage = rand.Next(this.Strength - 1, this.Strength + 2);
 
-            Console.WriteLine($"\n{this.Id} attacks {player.Name} and deals {damage} damage!");
+            Console.WriteLine($"\n{this.Type} attacks {player.Name} and deals {damage} damage!");
             player.Hp -= damage;
             Console.WriteLine($"{player.Name} has {player.Hp} hp left.");
         }
 
         public void Loot(Player player, Random rand)
         {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+
             int num = rand.Next(1, 5);
             Console.WriteLine($"\n{player.Name} loots {num} gold coins!");
 
@@ -57,7 +57,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             if (num == 1)
             {
                 Console.WriteLine($"{player.Name} loots Health Potion!", player.Name);
-                player.eq.Add(new Item("Hp potion"));
+                player.Equipment.Add(new Potion("Hp potion"));
             }
 
             int expGained = rand.Next(70, 120);
@@ -72,7 +72,10 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 player.Exp += expGained;
             }
 
-            Console.WriteLine("Press any key...");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("\nPress any key...");
+            Console.ForegroundColor = ConsoleColor.White;
+
             Console.ReadKey();
             Console.Clear();
         }

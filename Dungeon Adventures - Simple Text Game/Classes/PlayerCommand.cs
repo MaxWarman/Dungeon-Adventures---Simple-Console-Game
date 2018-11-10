@@ -20,15 +20,15 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             // General commands
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Coords - shows player coordinates");
-            Console.WriteLine("Desc - describes actuall room");
+            Console.WriteLine("Desc - describes actual room");
             Console.WriteLine("Look - shows available directions");
-            Console.WriteLine("Heal - heals 10 hp if player has Health Potion in equipment");
+            Console.WriteLine("Drink [potion name] - drinks potion and performs it's effects");
             Console.WriteLine("Eq - shows players equipment");
             Console.WriteLine("Stats - shows players statistics");
+            Console.WriteLine("Clear - clears console window");
 
             // Game-self commands
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("Clear - clears console window");
             Console.WriteLine("Exit - closing program");
 
 
@@ -44,22 +44,10 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        public static void ClearConsole(Player player)
-        {
-            Console.Clear();
-            PlayerCommand.DescribeRoom(player.actualRoom);
-            MainGameplay.ShowUI(player);
-        }
-
         public static void DescribeRoom(Dungeon room)
         {
             Console.WriteLine("Room description: ");
-            Console.WriteLine("\"{0}\"", room.description);
-        }
-
-        public static void ExitGame()
-        {
-            Environment.Exit(0);
+            Console.WriteLine("\"{0}\"", room.Description);
         }
 
         public static void LookForDirections(List<Dungeon> rooms, Dungeon room)
@@ -93,6 +81,29 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             }
         }
 
+        public static void DrinkPotion(Player player)
+        {
+
+        }
+
+        public static void ShowEquipment(Player player)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\nYour equipment: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            if (player.Equipment.Count == 0)
+            {
+                Console.WriteLine("Empty!");
+            }
+            else
+            {
+                foreach(Item item in player.Equipment)
+                {
+                    Console.WriteLine($" - {item.Name}");
+                }
+            }
+        }
+
         public static void ShowPlayerStatistics(Player player)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -106,5 +117,17 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.ForegroundColor = ConsoleColor.White;
 
         } 
+
+        public static void ClearConsole(Player player)
+        {
+            Console.Clear();
+            PlayerCommand.DescribeRoom(player.actualRoom);
+            MainGameplay.ShowUI(player);
+        }
+
+        public static void ExitGame()
+        {
+            Environment.Exit(0);
+        }
     }
 }

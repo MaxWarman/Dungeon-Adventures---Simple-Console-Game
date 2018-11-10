@@ -43,9 +43,8 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             return pl;
         }
 
-        public static void CreateDungeonRooms(out List<Dungeon> rooms)
+        public static void CreateDungeonRooms(List<Dungeon> rooms)
         {
-            rooms = new List<Dungeon>();
             string roomDescription;
 
             // Room 0,0

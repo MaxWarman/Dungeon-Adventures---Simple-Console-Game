@@ -5,53 +5,6 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
 {
     public class MainGameplay
     {
-        public static void PlayCombat(Player player, Random rand)
-        {
-            Monster monster = new Monster(player.actualRoom.mobType);
-            bool doesCombatLast = true;
-
-            Combat.SetupCombat(player, monster);
-
-            do
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("New turn!\n");
-                Console.ForegroundColor = ConsoleColor.White;
-
-                if (player.Dexterity > monster.Dexterity)
-                {
-                    Console.WriteLine($"{player.Name} attacks first!");
-                    player.TakeOneCombatTurn(monster, rand, player.actualRoom);
-
-                    doesCombatLast = Combat.Resolve(player, monster, rand);
-                    if (doesCombatLast == false)
-                    { break; }
-
-                    monster.Attack(player, rand);
-                    doesCombatLast = Combat.Resolve(player, monster, rand);
-                    if (doesCombatLast == false)
-                    { break; }
-                }
-                else
-                {
-                    Console.WriteLine($"{monster.Id} attacks first!");
-                    monster.Attack(player, rand);
-
-                    doesCombatLast = Combat.Resolve(player, monster, rand);
-                    if (doesCombatLast == false)
-                    { break; }
-
-                    player.TakeOneCombatTurn(monster, rand, player.actualRoom);
-
-                    doesCombatLast = Combat.Resolve(player, monster, rand);
-                    if (doesCombatLast == false)
-                    { break; }
-                }
-                Console.ForegroundColor = ConsoleColor.White;
-
-            } while (doesCombatLast == true);
-        }
-
         public static void ShowUI(Player player)
         {
             Console.WriteLine();
@@ -85,10 +38,21 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             bool isThereEvent = false;
             do
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("\nCommand: ");
-                string declaration = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.White;
 
-                switch(declaration.ToLower())
+                string declairedCommand = Console.ReadLine();
+                string optionalConditions = null;
+
+                if(declairedCommand.Contains(" "))
+                {
+                    string[] split = declairedCommand.Split(new char[] { ' ' }, 2);
+                    declairedCommand = split[0];
+                    optionalConditions = split[1];
+                }
+
+                switch(declairedCommand.ToLower())
                 {
                     case "h":
                     case "help":
@@ -106,22 +70,43 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                     case "east":
                         isThereEvent = true;
 
-                        player.Move(rooms, declaration);
+                        player.Move(rooms, declairedCommand);
                         break;
 
-                    // Player info declarations
+                    // Info declarations
                     case "coords":
                         PlayerCommand.ShowCoordinates(player);
                         break;
                     case "desc":
                         PlayerCommand.DescribeRoom(player.GetActualRoom(rooms));
                         break;
-                    case "l":
                     case "look":
                         PlayerCommand.LookForDirections(rooms, player.GetActualRoom(rooms));
                         break;
                     case "stats":
                         PlayerCommand.ShowPlayerStatistics(player);
+                        break;
+                    case "eq":
+                        PlayerCommand.ShowEquipment(player);
+                        break;
+
+                    // Action declarations (optionalCondidtions required)
+                    case "drink":
+                        bool potionDrunk = false;
+                        foreach(Potion potion in player.Equipment)
+                        {
+                            if(potion.Name == optionalConditions)
+                            {
+                                potion.Use(player);
+                                potionDrunk = true;
+                                break;
+                            }
+                        }
+
+                        if(potionDrunk == false)
+                        {
+                            Console.WriteLine("Wrong potion name!");
+                        }
                         break;
 
                     // Game-self declarations

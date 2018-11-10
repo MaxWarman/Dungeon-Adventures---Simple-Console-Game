@@ -4,20 +4,19 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
 {
     public class Dungeon: Coordinates
     {
+        public string Description { get; set; }
+        public string MobTypeInside { get; set; }
 
-        public string description;
-        public string mobType;
-
-        public bool isThereCombat;
-        public bool visited;
+        public bool IsThereCombat { get; set; }
+        public bool WasVisited { get; set; }
 
         public Dungeon(int x, int y, string desc)
         {
             this.X = x;
             this.Y = y;
-            this.description = desc;
-            this.isThereCombat = false;
-            this.visited = false;
+            this.Description = desc;
+            this.IsThereCombat = false;
+            this.WasVisited = false;
         }
 
         public Dungeon(int x, int y, string desc, string mobType)
@@ -25,11 +24,11 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             this.X = x;
             this.Y = y;
 
-            this.description = desc;
-            this.visited = false;
+            this.Description = desc;
+            this.WasVisited = false;
 
-            this.isThereCombat = true;
-            this.mobType = mobType;
+            this.IsThereCombat = true;
+            this.MobTypeInside = mobType;
         }
 
         public static void UpdateRoom(Player player, List<Dungeon> rooms)
