@@ -1,4 +1,4 @@
-# Dungeon-Adventures---Simple-Console-Game
+# Dungeon Adventures - Simple Console Game
 It's my very first 'big' programming project. I decided to try making a console game and see how it's gonna work.
 
 This project was inspired by classic (paper)RPG which could've been combined with a simple console technology and turn based mechanics.
