@@ -43,13 +43,13 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 Console.ForegroundColor = ConsoleColor.White;
 
                 string declairedCommand = Console.ReadLine();
-                string optionalConditions = null;
+                string additionalConditions = null;
 
                 if(declairedCommand.Contains(" "))
                 {
                     string[] split = declairedCommand.Split(new char[] { ' ' }, 2);
                     declairedCommand = split[0];
-                    optionalConditions = split[1];
+                    additionalConditions = split[1];
                 }
 
                 switch(declairedCommand.ToLower())
@@ -90,20 +90,19 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                         PlayerCommand.ShowEquipment(player);
                         break;
 
-                    // Action declarations (optionalCondidtions required)
+                    // Action declarations (additionalCondidtions required)
                     case "drink":
-                        bool potionDrunk = false;
+                        bool drunk = false;
                         foreach(Potion potion in player.Equipment)
                         {
-                            if(potion.Name == optionalConditions)
+                            if(potion.Name == additionalConditions)
                             {
                                 potion.Use(player);
-                                potionDrunk = true;
+                                drunk = true;
                                 break;
                             }
                         }
-
-                        if(potionDrunk == false)
+                        if(drunk == false)
                         {
                             Console.WriteLine("Wrong potion name!");
                         }

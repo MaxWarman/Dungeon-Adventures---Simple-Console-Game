@@ -144,26 +144,50 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                             break;
                         }
 
-                        Console.WriteLine("\nWhich potion do you want to drink? ");
-                        string potionDeclaration = Console.ReadLine();
-
                         bool potionDrunk = false;
-                        foreach (Potion potion in Equipment)
+                        do
                         {
-                            if (potion.Name == potionDeclaration)
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.WriteLine("\nOwned potions:");
+                            Console.ForegroundColor = ConsoleColor.White;
+
+                            foreach (Potion potion in Equipment)
                             {
-                                potion.Use(this);
-                                potionDrunk = true;
+                                Console.WriteLine($" - {potion.Name}");
+                            }
+
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write("\nWhich potion do you want to drink?\t");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("back - return to menu\n");
+                            Console.ForegroundColor = ConsoleColor.White;
+
+                            string potionDeclaration = Console.ReadLine();
+
+                            if(potionDeclaration == "back")
+                            {
+                                TakeOneCombatTurn(mob, rand, actPlayerRoom);
                                 break;
                             }
-                        }
 
-                        if (potionDrunk == false)
-                        {
-                            Console.WriteLine("\nWrong potion name!");
-                            flag = false;
-                        }
+                            foreach (Potion potion in Equipment)
+                            {
+                                if (potion.Name == potionDeclaration)
+                                {
+                                    potion.Use(this);
+                                    potionDrunk = true;
+                                    break;
+                                }
+                            }
 
+                            if (potionDrunk == false)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("\nWrong potion name!");
+                                Console.ForegroundColor = ConsoleColor.White;
+                                flag = false;
+                            }
+                        } while (potionDrunk == false);
                         break;
                     case "4":
                         this.Escape(rand);
@@ -191,7 +215,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                             return;
                         }
                     }
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("\nYou hit the wall, you can't go there...\n");
+                    Console.ForegroundColor = ConsoleColor.White;
                     break;
                 case "s":
                 case "south":
@@ -204,7 +230,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                             return;
                         }
                     }
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("\nYou hit the wall, you can't go there...\n");
+                    Console.ForegroundColor = ConsoleColor.White;
                     break;
                 case "w":
                 case "west":
@@ -217,7 +245,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                             return;
                         }
                     }
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("\nYou hit the wall, you can't go there...\n");
+                    Console.ForegroundColor = ConsoleColor.White;
                     break;
                 case "e":
                 case "east":
@@ -230,7 +260,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                             return;
                         }
                     }
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("\nYou hit the wall, you can't go there...\n");
+                    Console.ForegroundColor = ConsoleColor.White;
                     break;
                 default:
                     break;
@@ -253,24 +285,27 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             int num = rand.Next(1, 10);
             if (num <= this.Dexterity)
             {
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Escape successed!");
+                Console.ForegroundColor = ConsoleColor.White;
                 this.actualRoom.IsThereCombat = false;
-                return;
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Escape failed!");
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
 
-        public void LvlUp(int expGained)
+        public void LvlUp(int num)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Level up!\n");
             Console.ForegroundColor = ConsoleColor.White;
 
             this.Lvl++;
-            this.Exp = this.Exp + expGained;
+            this.Exp = this.Exp + num;
             this.Exp -= ExpToNextLvl;
             this.ExpToNextLvl += 25;
 
@@ -278,29 +313,29 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             {
                 case "Warrior":
                     this.MaxHp += 3;
-                    this.MaxMp += 2;
-                    this.Strength += 3;
+                    this.MaxMp += 1;
+                    this.Strength += 2;
                     this.Dexterity += 1;
                     break;
                 case "Mage":
                     this.MaxHp += 1;
-                    this.MaxMp += 5;
+                    this.MaxMp += 4;
                     this.Strength += 1;
-                    this.Dexterity += 2;
+                    this.Dexterity += 1;
                     break;
                 case "Rogue":
                     this.MaxHp += 2;
-                    this.MaxMp += 3;
+                    this.MaxMp += 2;
                     this.Strength += 2;
-                    this.Dexterity += 3;
+                    this.Dexterity += 2;
                     break;
             }
 
             if (this.Exp >= this.ExpToNextLvl)
             {
-                expGained = this.Exp - this.ExpToNextLvl;
-                this.Exp -= expGained;
-                this.LvlUp(expGained);
+                num = this.Exp - this.ExpToNextLvl;
+                this.Exp -= num;
+                this.LvlUp(num);
             }
         }
 

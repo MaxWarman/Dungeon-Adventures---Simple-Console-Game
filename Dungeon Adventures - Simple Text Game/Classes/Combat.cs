@@ -10,7 +10,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             bool doesCombatLast = true;
             bool doesPlayerAttackFirst = false;
 
-            SetupCombat(player, monster);
+            Console.WriteLine($"{monster.Type} appears in front of {player.Name} while passing to the next room!\nThe battle begins!");
 
             do
             {
@@ -66,11 +66,6 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             } while (doesCombatLast == true);
         }
 
-        public static void SetupCombat(Player player, Monster monster)
-        {
-            Console.WriteLine($"{monster.Type} appears in front of {player.Name} while passing to the next room!\nThe battle begins!");
-        }
-
         public static bool ResolveCombat(Player player, Monster monster, Random rand)
         {
             if(player.Hp <= 0)
@@ -85,6 +80,18 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 return false;
             }
 
+            if (player.actualRoom.IsThereCombat == false)
+            {
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine("\nPress any key...");
+                Console.ForegroundColor = ConsoleColor.White;
+
+                Console.ReadKey();
+                Console.Clear();
+
+                return false;
+            }
+            
             return true;
         }
     }

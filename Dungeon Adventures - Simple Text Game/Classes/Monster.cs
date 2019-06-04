@@ -50,26 +50,42 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
 
-            int num = rand.Next(1, 5);
-            Console.WriteLine($"\n{player.Name} loots {num} gold coins!");
-
-            num = rand.Next(1, 5);
-            if (num == 1)
+            // Loot gold
+            int num = rand.Next(0, 10);
+            if(num != 0)
             {
-                Console.WriteLine($"{player.Name} loots Health Potion!", player.Name);
-                player.Equipment.Add(new Potion("Hp potion"));
+                Console.WriteLine($"\n{player.Name} loots {num} gold coins!");
+                player.Gold += num;
             }
 
-            int expGained = rand.Next(70, 120);
-            Console.WriteLine($"{player.Name} gain {expGained} expirience points!\n");
-            player.ExpTotal += expGained;
-            if (expGained + player.Exp >= player.ExpToNextLvl)
+            // Loot potion
+            num = rand.Next(1, 100);
+            if (num <= 20)
             {
-                player.LvlUp(expGained);
+                int randPotion = rand.Next(1, 100);
+                if (randPotion <= 33)
+                {
+                    Console.WriteLine($"{player.Name} loots Mana Potion!", player.Name);
+                    player.Equipment.Add(new Potion("Mp potion"));
+                }
+                else
+                {
+                    Console.WriteLine($"{player.Name} loots Health Potion!", player.Name);
+                    player.Equipment.Add(new Potion("Hp potion"));
+                }
+            }
+
+            // Exp
+            num = rand.Next(70, 120);
+            Console.WriteLine($"{player.Name} gain {num} expirience points!\n");
+            player.ExpTotal += num;
+            if (num + player.Exp >= player.ExpToNextLvl)
+            {
+                player.LvlUp(num);
             }
             else
             {
-                player.Exp += expGained;
+                player.Exp += num;
             }
 
             Console.ForegroundColor = ConsoleColor.Gray;

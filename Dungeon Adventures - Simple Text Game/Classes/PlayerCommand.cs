@@ -81,11 +81,6 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             }
         }
 
-        public static void DrinkPotion(Player player)
-        {
-
-        }
-
         public static void ShowEquipment(Player player)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;

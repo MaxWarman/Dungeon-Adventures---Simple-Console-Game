@@ -9,16 +9,23 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         {
             Console.Clear();
 
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("What is your name, brave hero?");
+            Console.ForegroundColor = ConsoleColor.White;
+
             string name = "";
             do
             {
                 name = Console.ReadLine();
             } while (name == "");
 
-            Console.WriteLine("\nGreat! And what is your occupation?");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\nGreat! And what is your class?");
             Console.WriteLine("[1] Warrior \n[2] Mage \n[3] Rogue ");
-            Console.Write("Click to choose...");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("Click to choose...\n");
+            Console.ForegroundColor = ConsoleColor.White;
+
             int occup = 0;
             do
             {
