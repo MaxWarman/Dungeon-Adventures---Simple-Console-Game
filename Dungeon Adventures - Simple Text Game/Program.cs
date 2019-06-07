@@ -10,30 +10,55 @@ namespace Dungeon_Adventures___Simple_Text_Game
         {
             // Setup
             Random rand = new Random();
-            Setup.CreateDungeonRooms(out List<Dungeon> rooms);
+            List<Dungeon> rooms = new List<Dungeon>();
+            Setup.CreateDungeonRooms(rooms);
             Setup.ShowGameMainMenu();
             Player player = Setup.CreatePlayerCharacter();
 
-            // Game
-            while(true)
+            //foreach (Dungeon room in rooms)
+            //{
+            //    Console.WriteLine($"{room.X}, {room.Y}, {room.description}");
+            //}
+            //Console.ReadKey();
+
+            //Game
+            while (true)
             {
                 Console.Clear();
 
                 player.actualRoom = player.GetActualRoom(rooms);
 
-                if (player.actualRoom.isThereCombat == true)
+
+                int chanceForEnemyRespawn = rand.Next(1, 2);
+                bool enemyRespawnes = false;
+                if (player.actualRoom.IsThereCombat == true)
                 {
-                    MainGameplay.PlayCombat(player, rand);
-                    player.actualRoom.isThereCombat = false;
+                    Combat.ArrangeCombat(player, rand);
+                    player.actualRoom.IsThereCombat = false;
+                    if (chanceForEnemyRespawn == 1)
+                    {
+                        player.actualRoom.IsThereCombat = true;
+                        enemyRespawnes = true;
+                    }
                 }
 
                 PlayerCommand.DescribeRoom(player.actualRoom);
                 MainGameplay.ShowUI(player);
 
-                Dungeon.UpdateRoom(player, rooms);
-                MainGameplay.GetPlayerDeclaration(player, rooms);
+                // Inform if the enemy respawns
+                if (enemyRespawnes == true)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nYou still feel the dark magic inside this chamber...");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
 
+                Dungeon.UpdateRoom(player, rooms);
+                MainGameplay.GetPlayerDeclaration(player, rooms, rand);
+
+                Console.ForegroundColor = ConsoleColor.Gray;
                 Console.WriteLine("Press any key...");
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.ReadKey();
             }
         }
