@@ -40,14 +40,67 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         public static void ShowCoordinates(Player player)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\n" + $"Your coordinates: {player.X},{player.Y}" + "\n");
+            Console.WriteLine($"\nYour coordinates: {player.X},{player.Y}");
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public static void DrinkPotion(Player player, string additionalCommand, int numOfOperations)
+        {
+            if (numOfOperations == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nIncorrect number of potions!");
+                Console.ForegroundColor = ConsoleColor.White;
+                return;
+            }
+
+            int numOfPotions = 0;
+            foreach (Potion potion in player.Equipment)
+            {
+                if (potion.Name == additionalCommand)
+                {
+                    numOfPotions++;
+                    if(numOfPotions == numOfOperations)
+                    {
+                        break;
+                    }
+                }
+
+            }
+
+            if(numOfPotions == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nWrong potion name!");
+                Console.ForegroundColor = ConsoleColor.White;
+                return;
+            }
+
+            if(numOfPotions < numOfOperations)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nNot enough potions!");
+                Console.ForegroundColor = ConsoleColor.White;
+                return;
+            }
+
+            foreach (Potion potion in player.Equipment)
+            {
+                if (potion.Name == additionalCommand)
+                {
+                    potion.Drink(player, numOfOperations);
+                    break;
+                }
+            }
         }
 
         public static void DescribeRoom(Dungeon room)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Room description: ");
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("\"{0}\"", room.Description);
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public static void LookForDirections(List<Dungeon> rooms, Dungeon room)
@@ -105,8 +158,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.WriteLine("\n" + "Player statistics: ");
             Console.WriteLine($"- Strength = {player.Strength}");
             Console.WriteLine($"- Dexterity = {player.Dexterity}");
-            Console.WriteLine($"- Hp = {player.Hp}/{player.MaxHp}");
-            Console.WriteLine($"- Mp = {player.Mp}/{player.MaxMp}");
+            //Commented since displayed in UI
+            //Console.WriteLine($"- Hp = {player.Hp}/{player.MaxHp}");
+            //Console.WriteLine($"- Mp = {player.Mp}/{player.MaxMp}");
             Console.WriteLine($"- Exp = {player.Exp}/{player.ExpToNextLvl}");
             Console.WriteLine($"- Exp total = {player.ExpTotal}");
             Console.ForegroundColor = ConsoleColor.White;

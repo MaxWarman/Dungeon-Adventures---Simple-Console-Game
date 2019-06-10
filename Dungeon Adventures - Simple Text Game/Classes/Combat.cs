@@ -10,7 +10,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             bool doesCombatLast = true;
             bool doesPlayerAttackFirst = false;
 
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine($"{monster.Type} appears in front of {player.Name} while passing to the next room!\nThe battle begins!");
+            Console.ForegroundColor = ConsoleColor.White;
 
             do
             {

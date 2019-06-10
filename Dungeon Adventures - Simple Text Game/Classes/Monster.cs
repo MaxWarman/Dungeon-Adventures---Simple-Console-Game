@@ -43,7 +43,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
 
             Console.WriteLine($"\n{this.Type} attacks {player.Name} and deals {damage} damage!");
             player.Hp -= damage;
-            Console.WriteLine($"{player.Name} has {player.Hp} hp left.");
+            Console.WriteLine($"{player.Name} has {player.Hp}/{player.MaxHp} hp left.");
         }
 
         public void Loot(Player player, Random rand)
@@ -65,19 +65,19 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 int randPotion = rand.Next(1, 100);
                 if (randPotion <= 33)
                 {
-                    Console.WriteLine($"{player.Name} loots Mana Potion!", player.Name);
-                    player.Equipment.Add(new Potion("Mp potion"));
+                    Console.WriteLine($"{player.Name} drops Mana Potion!", player.Name);
+                    player.Equipment.Add(new Potion("mp potion"));
                 }
                 else
                 {
-                    Console.WriteLine($"{player.Name} loots Health Potion!", player.Name);
-                    player.Equipment.Add(new Potion("Hp potion"));
+                    Console.WriteLine($"{player.Name} drops Health Potion!", player.Name);
+                    player.Equipment.Add(new Potion("hp potion"));
                 }
             }
 
             // Exp
             num = rand.Next(70, 120);
-            Console.WriteLine($"{player.Name} gain {num} expirience points!\n");
+            Console.WriteLine($"{player.Name} gains {num} expirience points!\n");
             player.ExpTotal += num;
             if (num + player.Exp >= player.ExpToNextLvl)
             {

@@ -93,7 +93,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 menuOptions[2] = "---    Credits      ---";
                 menuOptions[3] = "---    Exit         ---";
 
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Dungeon Adventures - The Text Game\n");
+                Console.ForegroundColor = ConsoleColor.White;
 
                 for (int i = 0; i < menuOptions.Length; i++)
                 {
@@ -143,11 +145,14 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                             // Credits
                             Console.Clear();
                             Console.WriteLine("Title: 'Dungeon Adventures - The Console Game'");
-                            Console.WriteLine("Original game designed by: MaxWarman");
-                            Console.WriteLine("Programmered by: MaxWarman");
+                            Console.WriteLine("Game designed by: MaxWarman");
+                            Console.WriteLine("Programmed by: MaxWarman");
                             Console.WriteLine("Produced by: MaxWarman");
                             Console.WriteLine("Music by: it's a console game... (duh)");
-                            Console.WriteLine("\nclick any key to go back...");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            Console.WriteLine("\nClick any key to go back...");
+
+   
                             Console.ReadKey();
                             break;
                         case 3:

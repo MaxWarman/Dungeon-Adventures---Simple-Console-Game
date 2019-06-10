@@ -9,12 +9,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         public string Name { get; set; }
         public string Occupation { get; set; }
 
-        // Basic stats
-        public int Gold { get; set; } = 0;
-
-
         // Expirience properties
-
         public int Lvl { get; set; }
         public int Exp { get; set; }
         public int ExpTotal { get; set; }
@@ -23,6 +18,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
         // Frequently variable stats
         public int Strength { get; set; }
         public int Dexterity { get; set; }
+        public int Gold { get; set; } = 0;
 
         private int _hp;
         public int Hp
@@ -72,6 +68,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                     this.Dexterity = 3;
                     this.Hp = this.MaxHp = 15;
                     this.Mp = this.MaxMp = 5;
+                    this.Equipment.Add(new Potion("hp potion"));
                     this.Occupation = "Warrior";
                     break;
                 case 2:
@@ -79,6 +76,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                     this.Dexterity = 4;
                     this.Hp = this.MaxHp = 10;
                     this.Mp = this.MaxMp = 20;
+                    this.Equipment.Add(new Potion("mp potion"));
                     this.Occupation = "Mage";
                     break;
                 case 3:
@@ -114,7 +112,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.WriteLine("1 - Fight; 2 - Cast a spell; 3 - Drink a potion; 4 - Try to escape");
             Console.ForegroundColor = ConsoleColor.White;
 
-            bool flag = true;
+            bool repeat = false;
             do
             {
                 string declaration = Console.ReadLine();
@@ -122,9 +120,11 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 {
                     case "1":
                         this.Attack(mob, rand, actPlayerRoom);
+                        repeat = false;
                         break;
                     case "2":
                         Console.WriteLine("Not added yet...");
+                        repeat = true;
                         break;
                     case "3":
                         bool hasPotion = false;
@@ -140,7 +140,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                         if(hasPotion == false)
                         {
                             Console.WriteLine("\nYou havn't any!");
-                            flag = false;
+                            repeat = true;
                             break;
                         }
 
@@ -174,7 +174,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                             {
                                 if (potion.Name == potionDeclaration)
                                 {
-                                    potion.Use(this);
+                                    potion.Drink(this, 1);
                                     potionDrunk = true;
                                     break;
                                 }
@@ -185,22 +185,23 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("\nWrong potion name!");
                                 Console.ForegroundColor = ConsoleColor.White;
-                                flag = false;
+                                repeat = true;
                             }
                         } while (potionDrunk == false);
+                        repeat = false;
                         break;
                     case "4":
                         this.Escape(rand);
                         break;
                     default:
-                        flag = false;
+                        repeat = true;
                         break;
 
                 }
-            } while (flag == false);
+            } while (repeat == true);
         }
 
-        public void Move(List<Dungeon> rooms, string direction)
+        public bool Move(List<Dungeon> rooms, string direction, Random rand)
         {
             switch (direction.ToLower())
             {
@@ -212,12 +213,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                         {
                             this.actualRoom.WasVisited = true;
                             this.Y++;
-                            return;
+                            return false;
                         }
                     }
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("\nYou hit the wall, you can't go there...\n");
-                    Console.ForegroundColor = ConsoleColor.White;
                     break;
                 case "s":
                 case "south":
@@ -227,12 +225,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                         {
                             this.actualRoom.WasVisited = true;
                             this.Y--;
-                            return;
+                            return false;
                         }
                     }
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("\nYou hit the wall, you can't go there...\n");
-                    Console.ForegroundColor = ConsoleColor.White;
                     break;
                 case "w":
                 case "west":
@@ -242,12 +237,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                         {
                             this.actualRoom.WasVisited = true;
                             this.X--;
-                            return;
+                            return false;
                         }
                     }
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("\nYou hit the wall, you can't go there...\n");
-                    Console.ForegroundColor = ConsoleColor.White;
                     break;
                 case "e":
                 case "east":
@@ -257,16 +249,17 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                         {
                             this.actualRoom.WasVisited = true;
                             this.X++;
-                            return;
+                            return false ;
                         }
-                    }
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("\nYou hit the wall, you can't go there...\n");
-                    Console.ForegroundColor = ConsoleColor.White;
+                    }          
                     break;
                 default:
                     break;
             }
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("\nYou hit the wall, you can't go there...");
+            Console.ForegroundColor = ConsoleColor.White;
+            return true;
         }
 
         public void Attack(Monster mob, Random rand, Dungeon actPlayerRoom)
@@ -277,7 +270,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.WriteLine();
             Console.WriteLine($"{this.Name} attacks {mob.Type} and deals {damage} dmg!");
             mob.Hp -= damage;
-            Console.WriteLine($"{mob.Type} has {mob.Hp} hp left!", mob.Type, mob.Hp);
+            Console.WriteLine($"{mob.Type} has {mob.Hp}/{mob.MaxHp} hp left!", mob.Type, mob.Hp);
         }
 
         public void Escape(Random rand)
@@ -337,6 +330,8 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                 this.Exp -= num;
                 this.LvlUp(num);
             }
+
+            
         }
 
     }

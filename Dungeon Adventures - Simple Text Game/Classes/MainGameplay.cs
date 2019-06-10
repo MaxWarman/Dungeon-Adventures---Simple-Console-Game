@@ -15,7 +15,7 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.Write($" {player.Name}");
             Console.Write("     ");
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("Lvl:");
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write($" {player.Lvl}");
@@ -25,34 +25,78 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             Console.Write("Gold:");
             Console.ForegroundColor = ConsoleColor.White;
             Console.Write($" {player.Gold}");
+            Console.Write("     ");
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("Hp:");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write($" {player.Hp}/{player.MaxHp}");
+            Console.Write("     ");
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("Mp:");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write($" {player.Mp}/{player.MaxMp}");
+            Console.Write("     ");
+
             Console.Write("\n");
 
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("'help' - shows command list");
+            Console.Write("'help' - shows command list\n");
             Console.ForegroundColor = ConsoleColor.White; 
         }
 
-        public static void GetPlayerDeclaration(Player player, List<Dungeon> rooms)
+        public static void GetPlayerDeclaration(Player player, List<Dungeon> rooms, Random rand)
         {
             Console.WriteLine();
-            bool isThereEvent = false;
+            bool repeat = true;
             do
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("\nCommand: ");
                 Console.ForegroundColor = ConsoleColor.White;
 
-                string declairedCommand = Console.ReadLine();
-                string additionalConditions = null;
+                string mainCommand = Console.ReadLine();
+                string additionalCommand = null;
+                int numOfOperations = 1;
 
-                if(declairedCommand.Contains(" "))
+                if(mainCommand.Contains(" "))
                 {
-                    string[] split = declairedCommand.Split(new char[] { ' ' }, 2);
-                    declairedCommand = split[0];
-                    additionalConditions = split[1];
+                    int numOfSpaces = 0;
+                    foreach(char ch in mainCommand)
+                    {
+                        if(ch == ' ')
+                        {
+                            numOfSpaces++;
+                        }
+                    }
+
+                    string[] split = mainCommand.Split(new char[] { ' ' }, numOfSpaces + 1);
+                    mainCommand = split[0];
+
+                    int isNumber = 0;
+                    if (int.TryParse(split[1], out int n) == true)
+                    {
+                        isNumber++;
+                        numOfOperations = n;
+                        if(numOfOperations < 0)
+                        {
+                            numOfOperations = 0;
+                        }
+                    }
+
+                    for (int i = 1; i < numOfSpaces - isNumber + 1; i++)
+                    {
+                        additionalCommand += split[i + isNumber];
+                        if (i != numOfSpaces - isNumber) // nOS - iN + 1 - 1
+                        {
+                            additionalCommand += " ";
+                        }
+
+                    }
                 }
 
-                switch(declairedCommand.ToLower())
+                switch(mainCommand.ToLower())
                 {
                     case "h":
                     case "help":
@@ -68,12 +112,13 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                     case "west":
                     case "e":
                     case "east":
-                        isThereEvent = true;
+                        
 
-                        player.Move(rooms, declairedCommand);
+                        repeat = player.Move(rooms, mainCommand, rand);
                         break;
 
                     // Info declarations
+
                     case "coords":
                         PlayerCommand.ShowCoordinates(player);
                         break;
@@ -90,22 +135,9 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                         PlayerCommand.ShowEquipment(player);
                         break;
 
-                    // Action declarations (additionalCondidtions required)
+                    // Action declarations (additionalCommand required)
                     case "drink":
-                        bool drunk = false;
-                        foreach(Potion potion in player.Equipment)
-                        {
-                            if(potion.Name == additionalConditions)
-                            {
-                                potion.Use(player);
-                                drunk = true;
-                                break;
-                            }
-                        }
-                        if(drunk == false)
-                        {
-                            Console.WriteLine("Wrong potion name!");
-                        }
+                        PlayerCommand.DrinkPotion(player, additionalCommand, numOfOperations);
                         break;
 
                     // Game-self declarations
@@ -116,11 +148,13 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
                         PlayerCommand.ExitGame();
                         break;
                     default:
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Unknown command!");
+                        Console.ForegroundColor = ConsoleColor.White;
                         break;
                 }
 
-            } while (!isThereEvent);
+            } while (repeat == true);
         }
 
     }

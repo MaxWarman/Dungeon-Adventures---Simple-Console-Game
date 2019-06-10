@@ -11,29 +11,39 @@ namespace Dungeon_Adventures___Simple_Text_Game.Classes
             this.ItemType = "potion";
         }
 
-        public void Use(Player player)
+        public void Drink(Player player, int numOfOperations)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"You have drunk {Name}!");
             switch(Name)
             {
+                // "You have drunk..." in every case because of refreshing via .ClearConsole()
+
                 case "hp potion":
-                    player.Hp += 5;
-                    Console.WriteLine("5 Hp restored!");
+                    player.Hp += 5 * numOfOperations;
+                    PlayerCommand.ClearConsole(player);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"\nYou have drunk {numOfOperations} {Name}!");
+                    Console.WriteLine($"{5*numOfOperations} Hp restored!");
                     break;
                 case "mp potion":
-                    player.Mp += 10;
-                    Console.WriteLine("10 Mp restored!");
+                    player.Mp += 5 * numOfOperations;
+                    PlayerCommand.ClearConsole(player);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"\nYou have drunk {numOfOperations} {Name}!");
+                    Console.WriteLine($"{5 * numOfOperations} Mp restored!");               
                     break;
                 default:
                     break;
             }
-            for (int i = 0; i < player.Equipment.Count; i++)
+
+            for(int j = 0; j < numOfOperations; j++)
             {
-                if(player.Equipment[i].Name == Name)
+                for (int i = 0; i < player.Equipment.Count; i++)
                 {
-                    player.Equipment.RemoveAt(i);
-                    break;
+                    if(player.Equipment[i].Name == Name)
+                    {
+                        player.Equipment.RemoveAt(i);
+                        break;
+                    }
                 }
             }
             Console.ForegroundColor = ConsoleColor.White;
